@@ -1,0 +1,57 @@
+### GET request to Keycloak server to obtain OpenID configuration
+GET http://localhost:9090/realms/demo/.well-known/openid-configuration
+Content-Type: application/json
+
+### POST request to Keycloak server to obtain an access token
+POST http://localhost:9090/realms/demo/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type = password &
+client_id = admin-cli &
+username = admin@demo.com &
+password = password
+> {%
+    client.global.set("access_token", response.body.access_token)
+%}
+
+###
+GET http://localhost:8080/api/users
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+###
+GET http://localhost:8080/api/users/1
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+###
+GET http://localhost:8080/api/keycloak/clients
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+###
+GET http://localhost:8080/api/keycloak/clients/89cabf65-fac9-403e-b95e-e57649b1970a
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+###
+GET http://localhost:8080/api/keycloak/roles
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+###
+GET http://localhost:8080/api/keycloak/roles/default-roles-demo
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+###
+GET http://localhost:8080/api/keycloak/users
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+###
+GET http://localhost:8080/api/keycloak/users/1b5892b7-f240-4b85-b070-70ce7473e74b
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+###
