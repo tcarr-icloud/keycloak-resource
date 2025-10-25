@@ -3,7 +3,7 @@ package com.example.keycloakresource.keycloak.role;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/api/keycloak/roles")
 class RoleRepresentationController {
     private final RoleRepresentationService roleRepresentationService;
 

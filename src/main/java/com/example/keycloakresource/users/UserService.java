@@ -22,42 +22,26 @@ class UserService {
         User user = userRepository.findById(id).orElseThrow();
         UserRepresentation userRepresentation = null;
         if (user.getKeycloakUserId() != null) {
-            userRepresentation =
-                    keycloakUserService.getUserById(authorizationHeader, user.getKeycloakUserId());
+            userRepresentation = keycloakUserService.getUserById(authorizationHeader, user.getKeycloakUserId());
         }
         return toUserDTO(user, userRepresentation);
     }
 
     public UserDTO[] getUsers(String authorizationHeader) {
         Map<String, UserRepresentation> userRepresentations = new HashMap<>();
-        Arrays.stream(keycloakUserService.getUsers(authorizationHeader))
-                .forEach(
-                        (userRepresentation) ->
-                                userRepresentations.put(userRepresentation.id, userRepresentation));
+        Arrays.stream(keycloakUserService.getUsers(authorizationHeader)).forEach((userRepresentation) -> userRepresentations.put(userRepresentation.id, userRepresentation));
 
-        return userRepository.findAll().stream()
-                .map(
-                        user -> {
-                            UserRepresentation userRepresentation =
-                                    userRepresentations.get(user.getKeycloakUserId());
-                            return toUserDTO(user, userRepresentation);
-                        })
-                .distinct()
-                .toArray(UserDTO[]::new);
+        return userRepository.findAll().stream().map(user -> {
+            UserRepresentation userRepresentation = userRepresentations.get(user.getKeycloakUserId());
+            return toUserDTO(user, userRepresentation);
+        }).distinct().toArray(UserDTO[]::new);
     }
 
     private UserDTO toUserDTO(User user, UserRepresentation userRepresentation) {
         if (userRepresentation == null) {
             return new UserDTO(user.getId(), null, null, null, null, null, null);
         } else {
-            return new UserDTO(
-                    user.getId(),
-                    userRepresentation.id,
-                    userRepresentation.username,
-                    userRepresentation.firstName,
-                    userRepresentation.lastName,
-                    userRepresentation.email,
-                    userRepresentation.enabled);
+            return new UserDTO(user.getId(), userRepresentation.id, userRepresentation.username, userRepresentation.firstName, userRepresentation.lastName, userRepresentation.email, userRepresentation.enabled);
         }
     }
 
