@@ -43,11 +43,11 @@ public class UserRepresentationTestsIT {
         ResponseEntity<UserRepresentation[]> users = client.get().uri("http://localhost:" + port + "/api/keycloak/users").header("Authorization", "Bearer " + getAccessToken()).retrieve().toEntity(UserRepresentation[].class);
         assert users.getStatusCode() == HttpStatus.OK;
 
-        String idToGet = users.getBody()[0].id;
+        String idToGet = users.getBody()[0].id();
         ResponseEntity<UserRepresentation> user = client.get().uri("http://localhost:" + port + "/api/keycloak/users/" + idToGet).header("Authorization", "Bearer " + getAccessToken()).retrieve().toEntity(UserRepresentation.class);
         assert user.getStatusCode() == HttpStatus.OK;
         UserRepresentation userRepresentation = user.getBody();
-        assert userRepresentation.id.equals(idToGet);
+        assert userRepresentation.id().equals(idToGet);
     }
 
     @Test

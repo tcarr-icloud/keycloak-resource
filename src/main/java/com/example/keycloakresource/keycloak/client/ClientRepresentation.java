@@ -1,35 +1,21 @@
 package com.example.keycloakresource.keycloak.client;
 
 import java.util.ArrayList;
+import java.util.Map;
 
-public class ClientRepresentation {
-    public String id;
-    public String clientId;
-    public String name;
-    public String rootUrl;
-    public ArrayList<String> redirectUris = new ArrayList<>();
-    public ArrayList<String> webOrigins = new ArrayList<>();
-    public Attributes AttributesObject;
-    public AuthenticationFlowBindingOverrides AuthenticationFlowBindingOverridesObject;
-    public ArrayList<Object> protocolMappers = new ArrayList<>();
-    public ArrayList<String> defaultClientScopes = new ArrayList<>();
-    public ArrayList<String> optionalClientScopes = new ArrayList<>();
-    public Access AccessObject;
-    public String baseUrl;
-    public boolean surrogateAuthRequired;
-    public boolean enabled;
-    public boolean alwaysDisplayInConsole;
-    public String clientAuthenticatorType;
-    public float notBefore;
-    public boolean bearerOnly;
-    public boolean consentRequired;
-    public boolean standardFlowEnabled;
-    public boolean implicitFlowEnabled;
-    public boolean directAccessGrantsEnabled;
-    public boolean serviceAccountsEnabled;
-    public boolean publicClient;
-    public boolean frontchannelLogout;
-    public String protocol;
-    public boolean fullScopeAllowed;
-    public float nodeReRegistrationTimeout;
+public record ClientRepresentation(String id, String clientId, String name, String description, String type,
+                                   String rootUrl, String adminUrl, String baseUrl, Boolean surrogateAuthRequired,
+                                   Boolean enabled, Boolean alwaysDisplayInConsole, String clientAuthenticatorType,
+                                   String secret, String registrationAccessToken, String[] defaultRoles,
+                                   String[] redirectUris, String[] webOrigins, Integer notBefore, Boolean bearerOnly,
+                                   Boolean consentRequired, Boolean standardFlowEnabled, Boolean implicitFlowEnabled,
+                                   Boolean directAccessGrantsEnabled, Boolean serviceAccountsEnabled,
+                                   Boolean authorizationServicesEnabled, Boolean directGrantsOnly, Boolean publicClient,
+                                   Boolean frontchannelLogout, String protocol, Map<Object, Object> attributes,
+                                   Map<Object, Object> authenticationFlowBindingOverrides, Boolean fullScopeAllowed,
+                                   Integer nodeReRegistrationTimeout, Map<Object, Object> registeredNodes,
+                                   ArrayList<ProtocolMapperRepresentation> protocolMappers, String clientTemplate,
+                                   Boolean useTemplateConfig, Boolean useTemplateScope, Boolean useTempalteMappers,
+                                   String[] defaultClientScopes, String[] optionalClientScopes,
+                                   Object authorizationSettings, Map<Object, Object> access, String origin) {
 }

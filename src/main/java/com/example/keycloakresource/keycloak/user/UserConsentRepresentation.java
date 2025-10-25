@@ -1,9 +1,7 @@
 package com.example.keycloakresource.keycloak.user;
 
-public class UserConsentRepresentation {
-    public String clientId;
-    public String[] grantedClientScopes;
-    public Long createdDate;
-    public Long lastUpdatedDate;
-    public String[] grantedRealmRoles;
+import java.util.List;
+
+public record UserConsentRepresentation(String clientId, List<String> grantedClientScopes, Long createdDate,
+                                        Long lastUpdatedDate, List<String> grantedRealmRoles) {
 }

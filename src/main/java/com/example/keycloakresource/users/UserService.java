@@ -29,7 +29,7 @@ class UserService {
 
     public UserDTO[] getUsers(String authorizationHeader) {
         Map<String, UserRepresentation> userRepresentations = new HashMap<>();
-        Arrays.stream(keycloakUserService.getUsers(authorizationHeader)).forEach((userRepresentation) -> userRepresentations.put(userRepresentation.id, userRepresentation));
+        Arrays.stream(keycloakUserService.getUsers(authorizationHeader)).forEach((userRepresentation) -> userRepresentations.put(userRepresentation.id(), userRepresentation));
 
         return userRepository.findAll().stream().map(user -> {
             UserRepresentation userRepresentation = userRepresentations.get(user.getKeycloakUserId());
@@ -41,7 +41,7 @@ class UserService {
         if (userRepresentation == null) {
             return new UserDTO(user.getId(), null, null, null, null, null, null);
         } else {
-            return new UserDTO(user.getId(), userRepresentation.id, userRepresentation.username, userRepresentation.firstName, userRepresentation.lastName, userRepresentation.email, userRepresentation.enabled);
+            return new UserDTO(user.getId(), userRepresentation.id(), userRepresentation.username(), userRepresentation.firstName(), userRepresentation.lastName(), userRepresentation.email(), userRepresentation.enabled());
         }
     }
 

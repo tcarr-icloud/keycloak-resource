@@ -42,11 +42,11 @@ public class RoleRepresentationTestsIT {
         RestClient client = RestClient.create();
         ResponseEntity<RoleRepresentation[]> roles = client.get().uri("http://localhost:" + port + "/api/keycloak/roles").header("Authorization", "Bearer " + getAccessToken()).retrieve().toEntity(RoleRepresentation[].class);
         assert roles.getStatusCode() == HttpStatus.OK;
-        String idToGet = roles.getBody()[0].name;
+        String idToGet = roles.getBody()[0].name();
         ResponseEntity<RoleRepresentation> role = client.get().uri("http://localhost:" + port + "/api/keycloak/roles/" + idToGet).header("Authorization", "Bearer " + getAccessToken()).retrieve().toEntity(RoleRepresentation.class);
         assert role.getStatusCode() == HttpStatus.OK;
         RoleRepresentation roleRepresentation = role.getBody();
-        assert roleRepresentation.name.equals(idToGet);
+        assert roleRepresentation.name().equals(idToGet);
     }
 
     @Test
