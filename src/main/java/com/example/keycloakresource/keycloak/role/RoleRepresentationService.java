@@ -28,7 +28,8 @@ class RoleRepresentationService {
                 .uri(authServerUrl + "/admin/realms/" + realm + "/roles")
                 .header("Authorization", accessToken)
                 .retrieve()
-                .body(new ParameterizedTypeReference<>() {});
+                .body(new ParameterizedTypeReference<>() {
+                });
     }
 
 }

@@ -28,7 +28,8 @@ public class UserRepresentationService {
                 .uri(authServerUrl + "/admin/realms/" + realm + "/users")
                 .header("Authorization", accessToken)
                 .retrieve()
-                .body(new ParameterizedTypeReference<>() {});
+                .body(new ParameterizedTypeReference<>() {
+                });
     }
 
 }

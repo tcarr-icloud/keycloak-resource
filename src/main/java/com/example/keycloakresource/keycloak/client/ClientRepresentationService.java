@@ -28,7 +28,8 @@ class ClientRepresentationService {
                 .uri(authServerUrl + "/admin/realms/" + realm + "/clients")
                 .header("Authorization", accessToken)
                 .retrieve()
-                .body(new ParameterizedTypeReference<>() {});
+                .body(new ParameterizedTypeReference<>() {
+                });
     }
 
 }

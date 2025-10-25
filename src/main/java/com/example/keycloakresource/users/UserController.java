@@ -1,6 +1,5 @@
 package com.example.keycloakresource.users;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +24,7 @@ class UserController {
         try {
             return ResponseEntity.ok().body(userService.getUserById(authorizationHeader, id));
         } catch (NoSuchElementException noSuchElementException) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
     }
 
