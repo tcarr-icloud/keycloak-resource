@@ -1,0 +1,18 @@
+FROM eclipse-temurin:21-jdk-alpine
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} app.jar
+
+ENV SPRING_APPLICATION_NAME="spring-keycloak"
+ENV SPRING_JPA_SHOW-SQL="true"
+ENV SPRING_JPA_GENERATE-DDL="true"
+ENV SPRING_JPA_HIBERNATE_DDL-AUTO="update"
+ENV SPRING_DATASOURCE_URL="jdbc:postgresql://host.docker.internal:5432/spring-keycloak"
+ENV SPRING_DATASOURCE_USERNAME="postgres"
+ENV SPRING_DATASOURCE_PASSWORD="password"
+ENV SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI="http://127.0.0.1:9090/realms/demo"
+ENV SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI="http://127.0.0.1:9090/realms/demo/protocol/openid-connect/certs"
+ENV KEYCLOAK_REALM="demo"
+ENV KEYCLOAK_AUTH-SERVER-URL="http://localhost:9090"
+ENV CORS_ALLOWED-ORIGINS="http://localhost:4200"
+
+CMD java ${JAVA_OPTS} -jar /app.jar

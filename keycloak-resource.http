@@ -1,21 +1,21 @@
 ### GET request to Keycloak server to obtain OpenID configuration
-GET http://localhost:9090/realms/demo/.well-known/openid-configuration
+GET http://localhost:8080/realms/development/.well-known/openid-configuration
 Content-Type: application/json
 
 ### POST request to Keycloak server to obtain an access token
-POST http://localhost:9090/realms/demo/protocol/openid-connect/token
+POST http://localhost:8080/realms/development/protocol/openid-connect/token
 Content-Type: application/x-www-form-urlencoded
 
 grant_type = password &
-client_id = admin-cli &
-username = admin@demo.com &
+client_id = spa-client &
+username = admin@development.com &
 password = password
 > {%
     client.global.set("access_token", response.body.access_token)
 %}
 
 ###
-GET http://localhost:8080/api/users
+GET http://localhost:8081/api/users
 Content-Type: application/json
 Authorization: Bearer {{access_token}}
 
@@ -25,7 +25,7 @@ Content-Type: application/json
 Authorization: Bearer {{access_token}}
 
 ###
-GET http://localhost:8080/api/keycloak/clients
+GET http://localhost:8081/api/keycloak/clients
 Content-Type: application/json
 Authorization: Bearer {{access_token}}
 
@@ -55,3 +55,14 @@ Content-Type: application/json
 Authorization: Bearer {{access_token}}
 
 ###
+GET http://localhost:5182/weatherforecast
+Authorization: Bearer {{access_token}}
+
+###
+POST http://localhost:9090/realms/demo/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type = password &
+client_id = api-client &
+username = api.user@demo.com &
+password = password

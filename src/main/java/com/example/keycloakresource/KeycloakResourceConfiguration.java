@@ -23,12 +23,22 @@ public class KeycloakResourceConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.cors(Customizer.withDefaults())
+        // @formatter:off
+        http
+                .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
-                .oauth2ResourceServer(
-                        oauth2ResourceServer -> oauth2ResourceServer.jwt(Customizer.withDefaults()));
+                .authorizeHttpRequests(authorize ->
+                        authorize
+                                .anyRequest()
+                                .authenticated()
+                                //.hasAuthority("SCOPE_roles")
+                                // .hasAuthority("ADMIN")
+                                // .hasRole("ADMIN")
+                )
+                .oauth2ResourceServer(oauth2ResourceServer -> oauth2ResourceServer.jwt(Customizer.withDefaults()));
+                //.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(new KeycloakJwtAuthenticationConverter())));
         return http.build();
+        // @formatter:on
     }
 
     @Bean

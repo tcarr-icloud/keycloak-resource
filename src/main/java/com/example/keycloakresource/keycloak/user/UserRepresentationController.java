@@ -8,26 +8,29 @@ import org.springframework.web.client.HttpClientErrorException;
 @RestController
 @RequestMapping("/api/keycloak/users")
 class UserRepresentationController {
-    private final UserRepresentationService userService;
+    private final UserRepresentationService userRepresentationService;
 
-    public UserRepresentationController(UserRepresentationService userService) {
-        this.userService = userService;
+    public UserRepresentationController(UserRepresentationService userRepresentationService) {
+        this.userRepresentationService = userRepresentationService;
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<UserRepresentation> getUser(@RequestHeader("Authorization") String authorizationHeader, @PathVariable("id") String id) {
+    ResponseEntity<?> getUser(@RequestHeader("Authorization") String authorizationHeader, @PathVariable("id") String id) {
         try {
-            return ResponseEntity.ok().body(userService.getUserById(authorizationHeader, id));
+            return ResponseEntity.ok().body(userRepresentationService.getUserById(authorizationHeader, id));
         } catch (HttpClientErrorException httpClientErrorException) {
             return ResponseEntity.status(httpClientErrorException.getStatusCode()).build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        } catch (UserRepresentationServiceForbiddenException userRepresentationServiceForbiddenException) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN.value()).build();
         }
     }
 
     @GetMapping("")
-    ResponseEntity<UserRepresentation[]> getUsers(@RequestHeader("Authorization") String authorizationHeader) {
-        return ResponseEntity.ok().body(userService.getUsers(authorizationHeader));
+    ResponseEntity<?> getUsers(@RequestHeader("Authorization") String authorizationHeader) {
+        try {
+            return ResponseEntity.ok().body(userRepresentationService.getUsers(authorizationHeader));
+        } catch (UserRepresentationServiceForbiddenException userRepresentationServiceForbiddenException) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN.value()).build();
+        }
     }
-
 }

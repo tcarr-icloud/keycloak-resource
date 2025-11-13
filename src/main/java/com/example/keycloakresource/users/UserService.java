@@ -1,5 +1,6 @@
 package com.example.keycloakresource.users;
 
+import com.example.keycloakresource.keycloak.user.UserRepresentationServiceForbiddenException;
 import com.example.keycloakresource.keycloak.user.UserRepresentation;
 import com.example.keycloakresource.keycloak.user.UserRepresentationService;
 import org.springframework.stereotype.Service;
@@ -11,30 +12,36 @@ import java.util.Map;
 @Service
 class UserService {
     private final UserRepository userRepository;
-    private final UserRepresentationService keycloakUserService;
+    private final UserRepresentationService userRepresentationService;
 
-    UserService(UserRepository userRepository, UserRepresentationService keycloakUserService) {
+    UserService(UserRepository userRepository, UserRepresentationService userRepresentationService) {
         this.userRepository = userRepository;
-        this.keycloakUserService = keycloakUserService;
+        this.userRepresentationService = userRepresentationService;
     }
 
     public UserDTO getUserById(String authorizationHeader, Long id) {
         User user = userRepository.findById(id).orElseThrow();
         UserRepresentation userRepresentation = null;
         if (user.getKeycloakUserId() != null) {
-            userRepresentation = keycloakUserService.getUserById(authorizationHeader, user.getKeycloakUserId());
+            userRepresentation = userRepresentationService.getUserById(authorizationHeader, user.getKeycloakUserId());
         }
         return toUserDTO(user, userRepresentation);
     }
 
-    public UserDTO[] getUsers(String authorizationHeader) {
-        Map<String, UserRepresentation> userRepresentations = new HashMap<>();
-        Arrays.stream(keycloakUserService.getUsers(authorizationHeader)).forEach((userRepresentation) -> userRepresentations.put(userRepresentation.id(), userRepresentation));
+    public UserDTO[] getUsers(String authorizationHeader) throws UserRepresentationServiceForbiddenException {
+        try {
+            Map<String, UserRepresentation> userRepresentations = new HashMap<>();
+            Arrays.stream(userRepresentationService.getUsers(authorizationHeader))
+                    .forEach((userRepresentation) ->
+                            userRepresentations.put(userRepresentation.id(), userRepresentation));
 
-        return userRepository.findAll().stream().map(user -> {
-            UserRepresentation userRepresentation = userRepresentations.get(user.getKeycloakUserId());
-            return toUserDTO(user, userRepresentation);
-        }).distinct().toArray(UserDTO[]::new);
+            return userRepository.findAll().stream().map(user -> {
+                UserRepresentation userRepresentation = userRepresentations.get(user.getKeycloakUserId());
+                return toUserDTO(user, userRepresentation);
+            }).distinct().toArray(UserDTO[]::new);
+        } catch (UserRepresentationServiceForbiddenException userRepresentationServiceForbiddenException) {
+            throw userRepresentationServiceForbiddenException;
+        }
     }
 
     private UserDTO toUserDTO(User user, UserRepresentation userRepresentation) {
