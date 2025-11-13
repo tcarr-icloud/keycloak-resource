@@ -31,9 +31,6 @@ public class KeycloakResourceConfiguration {
                         authorize
                                 .anyRequest()
                                 .authenticated()
-                                //.hasAuthority("SCOPE_roles")
-                                // .hasAuthority("ADMIN")
-                                // .hasRole("ADMIN")
                 )
                 .oauth2ResourceServer(oauth2ResourceServer -> oauth2ResourceServer.jwt(Customizer.withDefaults()));
                 //.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(new KeycloakJwtAuthenticationConverter())));

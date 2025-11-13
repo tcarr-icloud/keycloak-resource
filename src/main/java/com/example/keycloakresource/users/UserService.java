@@ -1,8 +1,8 @@
 package com.example.keycloakresource.users;
 
-import com.example.keycloakresource.keycloak.user.UserRepresentationServiceForbiddenException;
 import com.example.keycloakresource.keycloak.user.UserRepresentation;
 import com.example.keycloakresource.keycloak.user.UserRepresentationService;
+import com.example.keycloakresource.keycloak.user.UserRepresentationServiceForbiddenException;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
