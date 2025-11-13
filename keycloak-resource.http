@@ -1,68 +1,57 @@
 ### GET request to Keycloak server to obtain OpenID configuration
-GET http://localhost:8080/realms/development/.well-known/openid-configuration
+GET {{oauthUrl}}/realms/{{realm}}/.well-known/openid-configuration
 Content-Type: application/json
 
 ### POST request to Keycloak server to obtain an access token
-POST http://localhost:8080/realms/development/protocol/openid-connect/token
+POST {{oauthUrl}}/realms/{{realm}}/protocol/openid-connect/token
 Content-Type: application/x-www-form-urlencoded
 
 grant_type = password &
-client_id = spa-client &
-username = admin@development.com &
-password = password
+client_id = {{clientId}} &
+username = {{clientUsername}} &
+password = {{clientSecret}}
 > {%
     client.global.set("access_token", response.body.access_token)
 %}
 
 ###
-GET http://localhost:8081/api/users
+GET {{resourceServerUrl}}/api/users
 Content-Type: application/json
 Authorization: Bearer {{access_token}}
 
 ###
-GET http://localhost:8080/api/users/1
+GET {{resourceServerUrl}}/api/users/1
 Content-Type: application/json
 Authorization: Bearer {{access_token}}
 
 ###
-GET http://localhost:8081/api/keycloak/clients
+GET {{resourceServerUrl}}/api/keycloak/clients
 Content-Type: application/json
 Authorization: Bearer {{access_token}}
 
 ###
-GET http://localhost:8080/api/keycloak/clients/89cabf65-fac9-403e-b95e-e57649b1970a
+GET {{resourceServerUrl}}/api/keycloak/clients/<<valid_id_From_previous_response>>
 Content-Type: application/json
 Authorization: Bearer {{access_token}}
 
 ###
-GET http://localhost:8080/api/keycloak/roles
+GET {{resourceServerUrl}}/api/keycloak/roles
 Content-Type: application/json
 Authorization: Bearer {{access_token}}
 
 ###
-GET http://localhost:8080/api/keycloak/roles/default-roles-demo
+GET {{resourceServerUrl}}/api/keycloak/roles/default-roles-{{realm}}
 Content-Type: application/json
 Authorization: Bearer {{access_token}}
 
 ###
-GET http://localhost:8080/api/keycloak/users
+GET {{resourceServerUrl}}/api/keycloak/users
 Content-Type: application/json
 Authorization: Bearer {{access_token}}
 
 ###
-GET http://localhost:8080/api/keycloak/users/1b5892b7-f240-4b85-b070-70ce7473e74b
+GET {{resourceServerUrl}}/api/keycloak/users/<<valid_id_From_previous_response>>
 Content-Type: application/json
 Authorization: Bearer {{access_token}}
 
 ###
-GET http://localhost:5182/weatherforecast
-Authorization: Bearer {{access_token}}
-
-###
-POST http://localhost:9090/realms/demo/protocol/openid-connect/token
-Content-Type: application/x-www-form-urlencoded
-
-grant_type = password &
-client_id = api-client &
-username = api.user@demo.com &
-password = password
