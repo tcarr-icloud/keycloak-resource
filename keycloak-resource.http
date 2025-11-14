@@ -55,3 +55,7 @@ Content-Type: application/json
 Authorization: Bearer {{access_token}}
 
 ###
+GET {{resourceServerUrl}}/api/service/version
+Authorization: Bearer {{access_token}}
+
+###
