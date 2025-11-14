@@ -33,6 +33,8 @@ Application defaults (see `src/main/resources/application.properties`):
 - `spring.jpa.hibernate.ddl-auto=update`
 - `logging.level.org.springframework=TRACE`
 
+The configuration used during development is included here [README_WINDOWS.md](README_WINDOWS.md).
+
 Security/CORS:
 - The app reads `cors.allowed-origins` property (in `KeycloakResourceConfiguration`) for CORS configuration.
 
@@ -55,9 +57,6 @@ Spring Boot supports relaxed binding for environment variables. Use uppercase wi
 - `SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI`
 - `SPRING_JPA_GENERATE-DDL`
 - `SPRING_JPA_SHOW-SQL`
-`
-CORS_ALLOWED-ORIGINS=http://localhost:4200;KEYCLOAK_AUTH-SERVER-URL=http://localhost:8080;KEYCLOAK_REALM=development;SPRING_APPLICATION_NAME=spring-keycloak;SPRING_DATASOURCE_PASSWORD=password;SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/spring-keycloak;SPRING_DATASOURCE_USERNAME=postgres;SPRING_JPA_GENERATE-DDL=true;SPRING_JPA_HIBERNATE_DDL-AUTO=update;SPRING_JPA_SHOW-SQL=true;SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI=http://keycloak:8080/realms/development;SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI=http://localhost:8080/realms/development/protocol/openid-connect/certs;SERVER_PORT=8081
-`
 
 ### Enviornment variable for Tests
 Tests requires the same variables as the application, plus OAuth2 client credentials to obtain a token from Keycloak. Example values for local testing:
