@@ -1,5 +1,6 @@
 # keycloak-resource
 
+## Overview
 RESTful resource server built with Spring Boot that integrates with Keycloak for authentication/authorization. The service has one resource, /api/users that is meant to be modified to suit the application user needs. The /api/keycloak resources are the KC side and not meant for extending. It exposes endpoints to work with:
 - Users in this service (`/api/users`)
 - Keycloak Users (`/api/keycloak/users`)
@@ -8,14 +9,14 @@ RESTful resource server built with Spring Boot that integrates with Keycloak for
 
 The service is secured as an OAuth2 Resource Server (JWT) and expects a Bearer token issued by Keycloak.
 
-## Stack
-- Language: Java 21 (see `pom.xml` → `<java.version>21</java.version>`)
-- Framework: Spring Boot 3.5.7 (Web, Security, OAuth2 Resource Server, Data JPA)
-- Database Driver: PostgreSQL (runtime dependency)
-- Build/Package: Maven (Maven Wrapper included: `mvnw`/`mvnw.cmd`)
-- Testing: JUnit (Spring Boot Test, Spring Security Test), integration tests via Maven Failsafe (`*IT.java`)
-- Container: Dockerfile provided
+## Tech Stack
 
+- **Language**: Java 21 (see `pom.xml` → `<java.version>21</java.version>`)
+- **Framework**: Spring Boot 3.5.7 (Web, Security, OAuth2 Resource Server, Data JPA)
+- **Database Driver**: PostgreSQL (runtime dependency)
+- **Build/Package**: Maven (Maven Wrapper included: `mvnw`/`mvnw.cmd`)
+- **Testing**: JUnit (Spring Boot Test, Spring Security Test), integration tests via Maven Failsafe (`*IT.java`)
+- **Container**: Dockerfile provided
 
 ## Requirements
 - Java 21 JDK
