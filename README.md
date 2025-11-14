@@ -1,13 +1,12 @@
-# Keycloak Resource (Spring Boot)
+# keycloak-resource
 
-RESTful resource server built with Spring Boot that integrates with Keycloak for authentication/authorization. It exposes endpoints to work with:
+RESTful resource server built with Spring Boot that integrates with Keycloak for authentication/authorization. The service has one resource, /api/users that is meant to be modified to suit the application user needs. The /api/keycloak resources are the KC side and not meant for extending. It exposes endpoints to work with:
 - Users in this service (`/api/users`)
 - Keycloak Users (`/api/keycloak/users`)
 - Keycloak Clients (`/api/keycloak/clients`)
 - Keycloak Roles (`/api/keycloak/roles`)
 
 The service is secured as an OAuth2 Resource Server (JWT) and expects a Bearer token issued by Keycloak.
-
 
 ## Stack
 - Language: Java 21 (see `pom.xml` → `<java.version>21</java.version>`)
