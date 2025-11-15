@@ -35,8 +35,8 @@
     <scm>
         <connection>scm:git:https://github.com/tcarr-icloud/keycloak-resource.git</connection>
         <developerConnection>scm:git:git@github.com:tcarr-icloud/keycloak-resource.git</developerConnection>
-        <tag>keycloak-resource-0.0.1</tag>
         <url>https://github.com/tcarr-icloud/keycloak-resource</url>
+        <tag>keycloak-resource-0.0.1</tag>
     </scm>
     <properties>
         <java.version>21</java.version>
