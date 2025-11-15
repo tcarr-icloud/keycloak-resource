@@ -1,0 +1,47 @@
+volumes:
+  postgres_data:
+    driver: local
+  pgadmin_data:
+    driver: local
+services:
+  pgadmin_service:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@development.com
+      PGADMIN_DEFAULT_PASSWORD: password
+    ports:
+      - "15432:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+  postgres_service:
+    image: postgres:16
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  keycloak_service:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak
+    command: [ "start-dev", "--http-port", "8080", "--https-port", "7443" ]
+    environment:
+      KC_DB: postgres
+      KC_DB_URL_HOST: postgres_service
+      KC_DB_USERNAME: postgres
+      KC_DB_PASSWORD: password
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: password
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres_service:
+        condition: service_healthy
