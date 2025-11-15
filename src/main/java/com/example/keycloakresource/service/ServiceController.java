@@ -1,4 +1,4 @@
-package com.example.keycloakresource;
+package com.example.keycloakresource.service;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

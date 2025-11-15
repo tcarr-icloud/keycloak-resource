@@ -1,4 +1,4 @@
-package com.example.keycloakresource;
+package com.example.keycloakresource.service;
 
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
