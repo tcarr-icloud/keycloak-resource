@@ -76,7 +76,7 @@ public class UserRepresentationTestsIT {
             client.get().uri("http://localhost:" + port + "/api/keycloak/users/" + idToGet).header("Authorization", "Bearer " + getAccessToken()).retrieve().toBodilessEntity();
             assert false;
         } catch (HttpClientErrorException e) {
-            assert e.getStatusCode() == HttpStatus.NOT_FOUND;
+            assert e.getStatusCode() == HttpStatus.FORBIDDEN;
         } catch (Exception e) {
             assert false;
         }
