@@ -21,6 +21,7 @@ The configuration is not secure and is intended for local development use only. 
 10. Go to _Clients_.
 11. _Create_, Client ID: *api-client*.
 12. _Create_, Client ID: *spa-client*.
+13. Set Valid redirect URIs and Web Origins to *http://localhost:4200/*.
 13. Go to _Users_.
 11. _Add user_, Username and Email: *admin@development.com*, Email verified: On.
 12. _Add user_, Username and Email: *api.user@development.com*, Email verified: On.
