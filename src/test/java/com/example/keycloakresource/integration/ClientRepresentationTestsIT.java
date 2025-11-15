@@ -1,6 +1,5 @@
 package com.example.keycloakresource.integration;
 
-import com.example.keycloakresource.AccessTokenResponse;
 import com.example.keycloakresource.keycloak.client.ClientRepresentation;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
