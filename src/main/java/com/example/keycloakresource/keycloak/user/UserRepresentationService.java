@@ -8,7 +8,7 @@ import org.springframework.web.client.RestClient;
 
 @Service
 public class UserRepresentationService {
-    @Value("${keycloak.auth-server-url}")
+    @Value("${keycloak.auth.server.url}")
     private String authServerUrl;
 
     @Value("${keycloak.realm}")

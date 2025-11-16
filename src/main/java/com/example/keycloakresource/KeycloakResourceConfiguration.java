@@ -18,7 +18,7 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 public class KeycloakResourceConfiguration {
-    @Value("${cors.allowed-origins}")
+    @Value("${cors.allowed.origins:/*}")
     private String corsAllowedOrigins;
 
     @Bean
