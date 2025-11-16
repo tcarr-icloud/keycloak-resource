@@ -40,4 +40,14 @@ class UserController {
         }
     }
 
+    @PostMapping("")
+    public ResponseEntity<?> createUser(@RequestHeader("Authorization") String authorizationHeader, @RequestBody UserDTO userDTO) {
+        try {
+            return ResponseEntity.ok().body(userService.createUser(authorizationHeader, userDTO));
+        } catch (UserRepresentationServiceForbiddenException userRepresentationServiceForbiddenException) {
+            return ResponseEntity
+                    .status(HttpStatus.FORBIDDEN.value())
+                    .body(new HttpErrorResponse(HttpStatus.FORBIDDEN.value(), userRepresentationServiceForbiddenException.getMessage()));
+        }
+    }
 }

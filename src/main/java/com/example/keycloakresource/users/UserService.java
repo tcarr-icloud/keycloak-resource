@@ -44,12 +44,53 @@ class UserService {
         }
     }
 
+    public UserDTO createUser(String authorizationHeader, UserDTO userDTO) {
+        User user = toUser(userDTO);
+        UserRepresentation userRepresentation = new UserRepresentation(
+                null,
+                userDTO.username(),
+                userDTO.firstName(),
+                userDTO.lastName(),
+                userDTO.email(),
+                true,
+                null,
+                null,
+                userDTO.enabled(),
+                null,
+                null,
+                null,
+                false,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null);
+        userRepresentation = userRepresentationService.create(authorizationHeader, userRepresentation);
+        user.setKeycloakUserId(userRepresentation.id());
+        user = userRepository.save(user);
+        return toUserDTO(user, userRepresentation);
+    }
+
     private UserDTO toUserDTO(User user, UserRepresentation userRepresentation) {
         if (userRepresentation == null) {
             return new UserDTO(user.getId(), null, null, null, null, null, null);
         } else {
             return new UserDTO(user.getId(), userRepresentation.id(), userRepresentation.username(), userRepresentation.firstName(), userRepresentation.lastName(), userRepresentation.email(), userRepresentation.enabled());
         }
+    }
+
+    private User toUser(UserDTO userDTO) {
+        User user = new User();
+        user.setKeycloakUserId(userDTO.keycloakUserId());
+        return user;
     }
 
 }

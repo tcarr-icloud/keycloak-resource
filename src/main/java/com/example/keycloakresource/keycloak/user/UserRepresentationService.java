@@ -15,15 +15,17 @@ public class UserRepresentationService {
     private String realm;
 
     public UserRepresentation getUserById(String accessToken, String id) throws UserRepresentationServiceForbiddenException {
-        return RestClient.create()
-                .get()
-                .uri(authServerUrl + "/admin/realms/" + realm + "/users/" + id)
-                .header("Authorization", accessToken)
-                .retrieve()
-                .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> {
-                    throw new UserRepresentationServiceForbiddenException("Unable to retrieve user representation");
-                })
-                .body(UserRepresentation.class);
+        return RestClient.create().get().uri(authServerUrl + "/admin/realms/" + realm + "/users/" + id).header("Authorization", accessToken).retrieve().onStatus(HttpStatusCode::is4xxClientError, (request, response) -> {
+            throw new UserRepresentationServiceForbiddenException("Unable to retrieve user representation");
+        }).body(UserRepresentation.class);
+    }
+
+    public UserRepresentation getUserByUsername(String accessToken, String username) throws UserRepresentationServiceForbiddenException {
+        UserRepresentation[] userRepresentations = RestClient.create().get().uri(authServerUrl + "/admin/realms/" + realm + "/users?username=" + username).header("Authorization", accessToken).retrieve().onStatus(HttpStatusCode::is4xxClientError, (request, response) -> {
+            throw new UserRepresentationServiceForbiddenException("Unable to retrieve user representation");
+        }).body(new ParameterizedTypeReference<>() {
+        });
+        return userRepresentations.length > 0 ? userRepresentations[0] : null;
     }
 
     public UserRepresentation[] getUsers(String accessToken) throws UserRepresentationServiceForbiddenException {
@@ -33,4 +35,14 @@ public class UserRepresentationService {
         });
     }
 
+    public UserRepresentation create(String accessToken, UserRepresentation userRepresentation) {
+        try {
+            RestClient.create().post().uri(authServerUrl + "/admin/realms/" + realm + "/users").header("Authorization", accessToken).body(userRepresentation).retrieve().onStatus(HttpStatusCode::is4xxClientError, (request, response) -> {
+                throw new UserRepresentationServiceForbiddenException("Unable to create user representation");
+            }).body(UserRepresentation.class);
+            return getUserByUsername(accessToken, userRepresentation.username());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
