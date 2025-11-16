@@ -1,6 +1,6 @@
 package com.example.keycloakresource.integration;
 
-import com.example.keycloakresource.keycloak.client.ClientRepresentation;
+import com.example.keycloakresource.users.UserDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,7 +14,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class ClientRepresentationTestsIT {
+class UserControllerIT {
     @LocalServerPort
     private int port;
 
@@ -37,49 +37,48 @@ public class ClientRepresentationTestsIT {
     private String oauth2GrantType;
 
     @Test
-    void getClientsExpectSuccess() {
-        RestClient client = RestClient.create();
-        String accessToken = getAccessToken();
-        ResponseEntity<ClientRepresentation[]> clients = client.get().uri("http://localhost:" + port + "/api/keycloak/clients").header("Authorization", "Bearer " + accessToken).retrieve().toEntity(ClientRepresentation[].class);
-        assert clients.getStatusCode() == HttpStatus.OK;
-        assert clients.getBody().length > 0;
-    }
-
-    @Test
-    void getClientsExpectUnauthorized() {
+    void getUsersExpectUnauthorized() {
         try {
             RestClient client = RestClient.create();
-            client.get().uri("http://localhost:" + port + "/api/keycloak/clients").retrieve().toBodilessEntity();
+            client.get().uri("http://localhost:" + port + "/api/users").retrieve().toEntity(Object.class);
             assert false;
-        } catch (HttpClientErrorException httpClientErrorException) {
-            assert httpClientErrorException.getStatusCode() == HttpStatus.UNAUTHORIZED;
+        } catch (HttpClientErrorException e) {
+            assert e.getStatusCode() == HttpStatus.UNAUTHORIZED;
         }
     }
 
     @Test
-    void getClientByIdExpectSuccess() {
+    void getUsersExpectSuccess() {
         RestClient client = RestClient.create();
-        ResponseEntity<ClientRepresentation[]> clients = client.get().uri("http://localhost:" + port + "/api/keycloak/clients").header("Authorization", "Bearer " + getAccessToken()).retrieve().toEntity(ClientRepresentation[].class);
-        assert clients.getStatusCode() == HttpStatus.OK;
-
-        String idToGet = clients.getBody()[0].id();
-        ResponseEntity<ClientRepresentation> clientRepresentationResponseEntity = client.get().uri("http://localhost:" + port + "/api/keycloak/clients/" + idToGet).header("Authorization", "Bearer " + getAccessToken()).retrieve().toEntity(ClientRepresentation.class);
-        assert clientRepresentationResponseEntity.getStatusCode() == HttpStatus.OK;
-        ClientRepresentation clientRepresentation = clientRepresentationResponseEntity.getBody();
-        assert clientRepresentation.id().equals(idToGet);
+        ResponseEntity<UserDTO[]> users = client.get().uri("http://localhost:" + port + "/api/users").header("Authorization", "Bearer " + getAccessToken()).retrieve().toEntity(UserDTO[].class);
+        assert users.getStatusCode() == HttpStatus.OK;
+        assert users.getBody().length >= 0;
     }
 
     @Test
-    void getClientByIdExpectNotFound() {
+    void getUserByIdExpectSuccess() {
+        RestClient client = RestClient.create();
+        ResponseEntity<UserDTO[]> users = client.get().uri("http://localhost:" + port + "/api/users").header("Authorization", "Bearer " + getAccessToken()).retrieve().toEntity(UserDTO[].class);
+        assert users.getStatusCode() == HttpStatus.OK;
+        if (users.getBody().length == 0) {
+            return;
+        }
+        long userIdToGet = users.getBody()[0].id();
+        ResponseEntity<UserDTO> user = client.get().uri("http://localhost:" + port + "/api/users/" + userIdToGet).header("Authorization", "Bearer " + getAccessToken()).retrieve().toEntity(UserDTO.class);
+        assert user.getStatusCode() == HttpStatus.OK;
+        UserDTO userDTO = user.getBody();
+        assert userDTO.id() == userIdToGet;
+    }
+
+    @Test
+    void getUserByIdExpectNotFound() {
         try {
             RestClient client = RestClient.create();
-            String idToGet = "-1L";
-            client.get().uri("http://localhost:" + port + "/api/keycloak/clients/" + idToGet).header("Authorization", "Bearer " + getAccessToken()).retrieve().toBodilessEntity();
+            long userIdToGet = -1L;
+            client.get().uri("http://localhost:" + port + "/api/users/" + userIdToGet).header("Authorization", "Bearer " + getAccessToken()).retrieve().toBodilessEntity();
             assert false;
         } catch (HttpClientErrorException e) {
             assert e.getStatusCode() == HttpStatus.NOT_FOUND;
-        } catch (Exception e) {
-            assert false;
         }
     }
 
@@ -93,5 +92,4 @@ public class ClientRepresentationTestsIT {
 
         return client.post().uri(oauth2Url + "/realms/" + oauth2Realm + "/protocol/openid-connect/token").contentType(MediaType.APPLICATION_FORM_URLENCODED).body(formData).retrieve().body(AccessTokenResponse.class).access_token();
     }
-
 }

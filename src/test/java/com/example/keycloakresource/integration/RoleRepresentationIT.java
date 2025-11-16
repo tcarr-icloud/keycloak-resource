@@ -1,6 +1,6 @@
 package com.example.keycloakresource.integration;
 
-import com.example.keycloakresource.keycloak.user.UserRepresentation;
+import com.example.keycloakresource.keycloak.role.RoleRepresentation;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,7 +14,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class UserRepresentationTestsIT {
+public class RoleRepresentationIT {
     @LocalServerPort
     private int port;
 
@@ -37,10 +37,10 @@ public class UserRepresentationTestsIT {
     private String oauth2GrantType;
 
     @Test
-    void getUsersExpectUnauthorized() {
+    void getRolesExpectUnauthorized() {
         try {
             RestClient client = RestClient.create();
-            client.get().uri("http://localhost:" + port + "/api/keycloak/users").retrieve().toBodilessEntity();
+            client.get().uri("http://localhost:" + port + "/api/keycloak/roles").retrieve().toBodilessEntity();
             assert false;
         } catch (HttpClientErrorException httpClientErrorException) {
             assert httpClientErrorException.getStatusCode() == HttpStatus.UNAUTHORIZED;
@@ -48,35 +48,34 @@ public class UserRepresentationTestsIT {
     }
 
     @Test
-    void getUsersExpectSuccess() {
+    void getRolesExpectSuccess() {
         RestClient client = RestClient.create();
-        ResponseEntity<UserRepresentation[]> users = client.get().uri("http://localhost:" + port + "/api/keycloak/users").header("Authorization", "Bearer " + getAccessToken()).retrieve().toEntity(UserRepresentation[].class);
-        assert users.getStatusCode() == HttpStatus.OK;
-        assert users.getBody().length > 0;
+        ResponseEntity<RoleRepresentation[]> roles = client.get().uri("http://localhost:" + port + "/api/keycloak/roles").header("Authorization", "Bearer " + getAccessToken()).retrieve().toEntity(RoleRepresentation[].class);
+        assert roles.getStatusCode() == HttpStatus.OK;
+        assert roles.getBody().length > 0;
     }
 
     @Test
-    void getUserByIdExpectSuccess() {
+    void getRoleByIdExpectSuccess() {
         RestClient client = RestClient.create();
-        ResponseEntity<UserRepresentation[]> users = client.get().uri("http://localhost:" + port + "/api/keycloak/users").header("Authorization", "Bearer " + getAccessToken()).retrieve().toEntity(UserRepresentation[].class);
-        assert users.getStatusCode() == HttpStatus.OK;
-
-        String idToGet = users.getBody()[0].id();
-        ResponseEntity<UserRepresentation> user = client.get().uri("http://localhost:" + port + "/api/keycloak/users/" + idToGet).header("Authorization", "Bearer " + getAccessToken()).retrieve().toEntity(UserRepresentation.class);
-        assert user.getStatusCode() == HttpStatus.OK;
-        UserRepresentation userRepresentation = user.getBody();
-        assert userRepresentation.id().equals(idToGet);
+        ResponseEntity<RoleRepresentation[]> roles = client.get().uri("http://localhost:" + port + "/api/keycloak/roles").header("Authorization", "Bearer " + getAccessToken()).retrieve().toEntity(RoleRepresentation[].class);
+        assert roles.getStatusCode() == HttpStatus.OK;
+        String idToGet = roles.getBody()[0].name();
+        ResponseEntity<RoleRepresentation> role = client.get().uri("http://localhost:" + port + "/api/keycloak/roles/" + idToGet).header("Authorization", "Bearer " + getAccessToken()).retrieve().toEntity(RoleRepresentation.class);
+        assert role.getStatusCode() == HttpStatus.OK;
+        RoleRepresentation roleRepresentation = role.getBody();
+        assert roleRepresentation.name().equals(idToGet);
     }
 
     @Test
-    void getUserByIdExpectNotFound() {
+    void getRoleByIdExpectNotFound() {
         try {
             RestClient client = RestClient.create();
             String idToGet = "-1L";
-            client.get().uri("http://localhost:" + port + "/api/keycloak/users/" + idToGet).header("Authorization", "Bearer " + getAccessToken()).retrieve().toBodilessEntity();
+            client.get().uri("http://localhost:" + port + "/api/keycloak/roles/" + idToGet).header("Authorization", "Bearer " + getAccessToken()).retrieve().toBodilessEntity();
             assert false;
         } catch (HttpClientErrorException e) {
-            assert e.getStatusCode() == HttpStatus.FORBIDDEN;
+            assert e.getStatusCode() == HttpStatus.NOT_FOUND;
         } catch (Exception e) {
             assert false;
         }
