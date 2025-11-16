@@ -47,7 +47,7 @@ graphical utilities like Keystore Explorer.
 The env variables necessary to run the application are listed below.
 
 `
-CORS_ALLOWED-ORIGINS=http://localhost:4200;KEYCLOAK_AUTH-SERVER-URL=http://localhost:9000;KEYCLOAK_REALM=development;SERVER_PORT=8081;SPRING_APPLICATION_NAME=spring-keycloak;SPRING_DATASOURCE_PASSWORD=password;SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/spring_keycloak;SPRING_DATASOURCE_USERNAME=postgres;SPRING_JPA_GENERATE-DDL=true;SPRING_JPA_HIBERNATE_DDL-AUTO=update;SPRING_JPA_SHOW-SQL=true;SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI=http://localhost:9000/realms/development;SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI=http://localhost:9000/realms/development/protocol/openid-connect/certs
+KEYCLOAK_AUTH_SERVER_URL=http://localhost:9000;KEYCLOAK_REALM=development;SERVER_PORT=8081;SPRING_APPLICATION_NAME=spring-keycloak;SPRING_DATASOURCE_PASSWORD=password;SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/spring_keycloak;SPRING_DATASOURCE_USERNAME=postgres;SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI=http://localhost:9000/realms/development;SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI=http://localhost:9000/realms/development/protocol/openid-connect/certs
 `
 
 **Good Luck!**

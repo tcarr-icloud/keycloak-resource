@@ -47,16 +47,13 @@ Database:
 ### Environment variables
 Spring Boot supports relaxed binding for environment variables. Use uppercase with underscores. Examples:
 - `SERVER_PORT` (maps to `server.port`)
-- `CORS_ALLOWED-ORIGINS` (maps to `cors.allowed-origins`)
-- `KEYCLOAK_AUTH-SERVER-URL`
+- `KEYCLOAK_AUTH_SERVER_URL`
 - `KEYCLOAK_REALM`
 - `SPRING_DATASOURCE_URL` (maps to `spring.datasource.url`)
 - `SPRING_DATASOURCE_USERNAME`
 - `SPRING_DATASOURCE_PASSWORD`
 - `SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI`
 - `SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI`
-- `SPRING_JPA_GENERATE-DDL`
-- `SPRING_JPA_SHOW-SQL`
 
 ### Enviornment variable for Tests
 Tests requires the same variables as the application, plus OAuth2 client credentials to obtain a token from Keycloak. Example values for local testing:
