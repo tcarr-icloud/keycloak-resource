@@ -1,0 +1,87 @@
+### POST request to Keycloak server to obtain an access token
+POST {{oauthUrl}}/realms/{{realm}}/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type = password &
+client_id = {{clientId}} &
+username = {{clientUsername}} &
+password = {{clientSecret}}
+> {%
+    client.global.set("access_token", response.body.access_token)
+%}
+
+###
+GET {{resourceServerUrl}}/api/service/version
+Authorization: Bearer {{access_token}}
+
+###
+POST {{resourceServerUrl}}/api/users
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+  "keycloakUserId": "",
+  "username": "post12.user",
+  "firstName": "Post12",
+  "lastName": "User",
+  "email": "post12.user@development.com",
+  "enabled": true
+}
+
+###
+GET {{resourceServerUrl}}/api/users
+Authorization: Bearer {{access_token}}
+
+###
+POST {{oauthUrl}}/admin/realms/development/users
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+  "username": "adminCreatedUser1",
+  "enabled": true,
+  "firstName": "Admin",
+  "lastName": "User",
+  "email": ""
+}
+
+###
+POST {{oauthUrl}}/admin/realms/development/users
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+  "id": null,
+  "username": "postUser10",
+  "firstName": "",
+  "lastName": "",
+  "email": "",
+  "emailVerified": null,
+  "attributes": null,
+  "userProfileMetadata": null,
+  "enabled": true,
+  "self": null,
+  "origin": null,
+  "createdTimestamp": null,
+  "totp": false,
+  "federationLink": null,
+  "serviceAccountClientId": null,
+  "credentials": null,
+  "requiredActions": null,
+  "federatedIdentities": null,
+  "realmRoles": null,
+  "clientRoles": null,
+  "clientConsents": null,
+  "notBefore": null,
+  "applicationRoles": null,
+  "socialLinks": null,
+  "groups": null,
+  "access": null
+}
+
+###
+GET {{oauthUrl}}/admin/realms/development/users?username=postUser10
+Authorization: Bearer {{access_token}}
+
+###
+

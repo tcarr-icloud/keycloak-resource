@@ -33,7 +33,7 @@ Application defaults (see `src/main/resources/application.properties`):
 - `spring.jpa.hibernate.ddl-auto=update`
 - `logging.level.org.springframework=TRACE`
 
-The configuration used during development is included here [README.md](setup/README.md).
+The configuration used during development is included here [README.md](QUICK_START.md).
 
 Security/CORS:
 - The app reads `cors.allowed-origins` property (in `KeycloakResourceConfiguration`) for CORS configuration.
