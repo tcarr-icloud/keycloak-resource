@@ -32,4 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 
-keycloak.pfx
+../DockerComposeWithPgAdminPostgresqlKeycloak/keycloak.pfx
