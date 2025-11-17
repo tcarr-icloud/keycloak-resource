@@ -15,7 +15,7 @@ public record ClientRepresentation(String id, String clientId, String name, Stri
                                    Map<Object, Object> authenticationFlowBindingOverrides, Boolean fullScopeAllowed,
                                    Integer nodeReRegistrationTimeout, Map<Object, Object> registeredNodes,
                                    ArrayList<ProtocolMapperRepresentation> protocolMappers, String clientTemplate,
-                                   Boolean useTemplateConfig, Boolean useTemplateScope, Boolean useTempalteMappers,
+                                   Boolean useTemplateConfig, Boolean useTemplateScope, Boolean useTemplateMappers,
                                    String[] defaultClientScopes, String[] optionalClientScopes,
                                    Object authorizationSettings, Map<Object, Object> access, String origin) {
 }
